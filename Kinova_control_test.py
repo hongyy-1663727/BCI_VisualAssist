@@ -249,22 +249,7 @@ if __name__ == '__main__':
         #print(d)
         if d.count(d[0]) == len(d):
             #apply attractor here:
-
-
-
-
-            dist = [close_x / 1000, -close_y / 1000,
-                    close_z / 1000]  # X for left or right, y for up or down, z for forward or backward
-            offset = [0.15,0,0.15]
-            true_dist = map(operator.sub, dist, offset)
-
-            position = unitParser(true_dist)
-            pose = [float(n) for n in position]
-            x_dirct = pose[0]
-            y_dirct = pose[1]
-            z_dirct = pose[2]
-            print(d)
-            print(z_dirct)
+            
 
 
 
