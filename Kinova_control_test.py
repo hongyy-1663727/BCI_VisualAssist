@@ -19,8 +19,6 @@ import std_msgs.msg
 import geometry_msgs.msg
 from realsense_camera import *
 from mask_rcnn import *
-
-
 import math
 
 """ Global variable """
@@ -54,6 +52,26 @@ def cartesian_pose_client(position, orientation):
         client.cancel_all_goals()
         print('        the cartesian action timed-out')
         return None
+
+def publishCatesianVelocityCommands(cartVel, duration_sec, prefix):
+	topic_name = '/' + prefix + 'driver/in/cartesian_velocity'
+	#publish joint torque commands
+	pub = rospy.Publisher(topic_name, kinova_msgs.msg.PoseVelocity, queue_size=1)
+	poseVelCmd = kinova_msgs.msg.PoseVelocity()
+	poseVelCmd.twist_linear_x = cartVel[0];
+	poseVelCmd.twist_linear_y = cartVel[1];
+	poseVelCmd.twist_linear_z = cartVel[2];
+	poseVelCmd.twist_angular_x = cartVel[3];
+	poseVelCmd.twist_angular_y = cartVel[4];
+	poseVelCmd.twist_angular_z = cartVel[5];
+	count = 0	
+	rate = rospy.Rate(100)
+	while (count < 100*duration_sec):
+		count = count + 1		
+		pub.publish(poseVelCmd)
+		rate.sleep()
+		
+		
 
 def getcurrentCartesianCommand(prefix_):
     # wait to get current position
